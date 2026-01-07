@@ -1,16 +1,33 @@
 <script setup>
-import Header from './components/Header.vue'
-import SwipableCard from './components/SwipableCard.vue'
+import Header from '../features/components/Header.vue'
+import SwipableCard from '../features/components/SwipableCard.vue'
+import { ref } from 'vue'
 
 
+const likedMovies = ref([]);
+const rejectedMovies = ref([]);
 
 const handleLike = (movie) => {
-  console.log('Liked movie:', movie.title);
+likedMovies.value.push(movie);
+
 };
 
 const handleReject = (movie) => {
-  console.log('Rejected movie:', movie.title);
+rejectedMovies.value.push(movie);
 };
+
+
+// create get movie function to fetch random movie from themoviedb api
+const getRandomMovie = () => {
+ const result = fetch
+
+}
+
+
+// check both liked and rejected movies to avoid duplicates before fetching new movie
+
+
+
 
 
 
@@ -22,7 +39,7 @@ const handleReject = (movie) => {
     
 
 
-
+<p>Liked movies so far: {{likedMovies.length}}</p>
 
 <SwipableCard
 :movie ="{
@@ -52,11 +69,14 @@ const handleReject = (movie) => {
 <style scoped>
 
 .container {
-  max-width: 1200px;
+width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin: 50px auto;
-  background-color: green;
+  align-items: center;
+  /* margin: 50px auto; */
+  /* background-color:  green; */
+
 
 }
 

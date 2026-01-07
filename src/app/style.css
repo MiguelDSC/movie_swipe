@@ -1,0 +1,35 @@
+html{
+  margin: 0;
+  padding:  0;
+  min-height: 100dvh;
+
+  background-color:  grey;
+    display: flex;
+    max-width: 100dvw;
+  justify-content: center; 
+
+
+}
+
+
+body {
+  margin: 0;
+  padding:  0;
+  width:  60dvw;
+  /* background-color:  blue; */
+
+
+}
+
+
+/* media query if mobile set full width */
+@media (max-width: 800px) {
+  body {
+    width:  100dvw;
+  }
+}
+
+*{
+
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

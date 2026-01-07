@@ -39,7 +39,7 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import placeholder from '../assets/cover.jpg'
+import placeholder from '../../assets/cover.jpg'
 
 const props = defineProps({
   movie: {
@@ -113,9 +113,9 @@ const releaseYear = computed(() =>
 <style scoped>
 .movie-card {
   position: relative;
-  width: 100%;
+  width: 80%;
   max-width: 380px;
-  height: 540px;
+  height: 500px;
   background: #111;
   border-radius: 16px;
   overflow: hidden;
