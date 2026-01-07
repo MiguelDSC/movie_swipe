@@ -1,34 +1,14 @@
 <script setup>
 import Header from '../features/components/Header.vue'
 import SwipableCard from '../features/components/SwipableCard.vue'
-import { ref } from 'vue'
+import { useMovies } from '../features/useMovies';
 
-
-const likedMovies = ref([]);
-const rejectedMovies = ref([]);
-
-const handleLike = (movie) => {
-likedMovies.value.push(movie);
-
-};
-
-const handleReject = (movie) => {
-rejectedMovies.value.push(movie);
-};
-
-
-// create get movie function to fetch random movie from themoviedb api
-const getRandomMovie = () => {
- const result = fetch
-
-}
-
-
-// check both liked and rejected movies to avoid duplicates before fetching new movie
-
-
-
-
+const {
+  likedMovies,
+  currentMovie,
+  like,
+  reject,
+} = useMovies();
 
 
 </script>
@@ -41,18 +21,11 @@ const getRandomMovie = () => {
 
 <p>Liked movies so far: {{likedMovies.length}}</p>
 
-<SwipableCard
-:movie ="{
-  id: 550,
-  title: 'Fight Club',
-  overview: 'A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy',
-  poster_path: 'cover.jpg',
-  release_date: '1999-10-15',
-  vote_average: 8.4
-}"
-@like="handleLike"
-@reject="handleReject"
-/> 
+<SwipableCard v-if="currentMovie != null"
+:movie ="currentMovie"
+@like="like"
+@reject="reject"
+/>
 
 <!-- divider -->
 

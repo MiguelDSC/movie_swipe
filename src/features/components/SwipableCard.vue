@@ -21,7 +21,7 @@
       </h2>
 
       <div class="ratings">
-        ⭐ {{ movie.vote_average.toFixed(1) }}
+        ⭐ {{ rating }}
         <span v-if="movie.rtScore">🍅 {{ movie.rtScore }}%</span>
       </div>
 
@@ -39,7 +39,8 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import placeholder from '../../assets/cover.jpg'
+import placeholder from '../../assets/stock-img.jpg'
+import { baseUrl } from '../../shared/constants.js'
 
 const props = defineProps({
   movie: {
@@ -96,12 +97,18 @@ function onPointerUp() {
 }
 
 const posterUrl = computed(() =>
-    //   props.movie.poster_path
-    //     ? `../assets/${props.movie.poster_path}`
-    //     : '/placeholder.png'
 
-       placeholder
+      props.movie.poster_path
+        ? `${baseUrl}${props.movie.poster_path}`
+        : placeholder
+
 )
+const rating = computed(() =>
+  typeof props.movie.vote_average === 'number'
+    ? props.movie.vote_average.toFixed(1)
+    : '—'
+)
+
 
 const releaseYear = computed(() =>
   props.movie.release_date
