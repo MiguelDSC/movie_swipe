@@ -1,14 +1,11 @@
 <script setup>
 import Header from '../features/components/Header.vue'
 import SwipableCard from '../features/components/SwipableCard.vue'
-import { useMovies } from '../features/useMovies';
+import { MovieStore } from '../features/stores/MovieStore';
 
-const {
-  likedMovies,
-  currentMovie,
-  like,
-  reject,
-} = useMovies();
+
+const movieStore = MovieStore();
+movieStore.loadPage();
 
 
 </script>
@@ -19,12 +16,12 @@ const {
     
 
 
-<p>Liked movies so far: {{likedMovies.length}}</p>
+<p>Liked movies so far: {{movieStore.likedMovies.length}}</p>
 
-<SwipableCard v-if="currentMovie != null"
-:movie ="currentMovie"
-@like="like"
-@reject="reject"
+<SwipableCard v-if="movieStore.currentMovie != null"
+:movie ="movieStore.currentMovie"
+@like="movieStore.like"
+@reject="movieStore.reject"
 />
 
 <!-- divider -->
