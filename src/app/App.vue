@@ -1,11 +1,16 @@
 <script setup>
+import { onMounted } from 'vue';
 import Header from '../features/components/Header.vue'
 import SwipableCard from '../features/components/SwipableCard.vue'
-import { MovieStore } from '../features/stores/MovieStore';
+import { useMovieStore } from '../features/stores/useMovieStore';
 
 
-const movieStore = MovieStore();
-movieStore.loadPage();
+const movieStore = useMovieStore();
+
+// onmount to call fetchMovies
+onMounted(() => {
+  if (!movieStore.currentMovie) movieStore.loadPage();
+});
 
 
 </script>

@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
-import { writeToStorage, readFromStorage  } from "../useLocalStorage";
-import { useDiscoverMovies } from "../useDiscoverMovies";
+import { writeToStorage, readFromStorage } from "../useLocalStorage";
+import { fetchMovies } from "../discoverMovies";
 
-export const MovieStore = defineStore('movie', {
+export const useMovieStore = defineStore('movie', {
   state: () => {
     return {
       likedMovies: readFromStorage('MS_LIKED_MOVIES'),
@@ -26,7 +26,7 @@ export const MovieStore = defineStore('movie', {
       this.loading = true;
       this.error = null;
       try {
-        const results = await useDiscoverMovies.fetchMovies(this.currentPage);
+        const results = await fetchMovies(this.currentPage);
         const seen = new Set([...this.likedMovies, ...this.rejectedMovies]);
         const filtered = results.filter(m => !seen.has(m.id));
 
@@ -56,7 +56,7 @@ export const MovieStore = defineStore('movie', {
 
     async like(movie) {
       if (movie?.id != null) this.likedMovies.push(movie.id);
-    writeToStorage('MS_LIKED_MOVIES', this.likedMovies);
+      writeToStorage('MS_LIKED_MOVIES', this.likedMovies);
       await this.handleNextMovie();
     },
 
