@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import { writeToStorage, readFromStorage } from "../useLocalStorage";
-import { fetchMovies } from "../discoverMovies";
+import { readFromStorage, writeToStorage } from "../utils";
+import { fetchMovieById, fetchMovies } from "../discoverMovies";
 
 export const useMovieStore = defineStore('movie', {
   state: () => {
@@ -15,11 +15,40 @@ export const useMovieStore = defineStore('movie', {
       movieList: [],
     };
   },
+  getters: {
+   
+  },
+
   actions: {
 
     nextPage() {
       this.currentPage += 1;
     },
+
+     async getLikedMovies() {
+      console.log("getting liked movies ");
+
+      this.error = null;
+      this.loading = true;
+
+      try {
+        console.log(" bob" );
+        
+        const data = await Promise.all(
+      this.likedMovies.map(id => fetchMovieById(id))
+    )
+    return data
+
+      } catch (e) {
+        this.error = e
+      } finally {
+        this.loading = false
+      }
+      ;
+
+    },
+
+
 
 
     async loadPage() {

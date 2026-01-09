@@ -1,14 +1,20 @@
 <template>
-   <header>
+  <header>
     <h1>{{ title }}</h1>
-    <button>{{ myListBtn }}</button>
-   </header>
+    <button @click="$emit('setMode', 2)">{{ myListBtn }}</button>
+    <button @click="$emit('setMode', 1)">{{ swipeMoviesBtn }}</button>
+  </header>
 </template>
 
 <script setup>
 
-    const title = "Movie Swipe";
-    const myListBtn = "My List";
+
+defineEmits(['setMode']);
+
+
+const title = "Movie Swipe";
+const myListBtn = "My List";
+const swipeMoviesBtn = "Swipe Movies";
 
 
 </script>
@@ -22,15 +28,18 @@ header {
   padding: 1rem;
   background-color: #f5f5f5;
 }
+
 h1 {
   margin: 0;
   font-size: 1.5rem;
 }
+
 button {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   cursor: pointer;
 }
+
 button:hover {
   background-color: #e0e0e0;
 }

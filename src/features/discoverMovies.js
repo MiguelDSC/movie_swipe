@@ -1,4 +1,4 @@
-import { discoverMovies } from "../services/tmdbService";
+import {discoverMovies, getMovieDetails} from "../services/tmdbService";
 
 
 
@@ -12,3 +12,15 @@ export async function fetchMovies(page = 1) {
 
     }
 }
+
+export async function fetchMovieById(id) {
+    try {
+        const data = await getMovieDetails( id );
+        return data
+    }
+    catch (e) {
+        console.error('Error fetching movie by ID:', e);
+        throw e;
+    }
+}
+

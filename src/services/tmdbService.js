@@ -9,8 +9,7 @@ const defaultDiscoverParams = {
 
 export async function discoverMovies({ page = 1, ...overrides } = {}) {
   const params = { ...defaultDiscoverParams, page, ...overrides };
-  const data = await apiClient.get('/discover/movie', { params });
-  return data;
+    return await apiClient.get('/discover/movie', {params});
 }
 
 export async function getMovieDetails(id, { language = 'en-US' } = {}) {

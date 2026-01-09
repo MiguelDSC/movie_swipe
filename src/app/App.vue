@@ -1,11 +1,14 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import Header from '../features/components/Header.vue'
 import SwipableCard from '../features/components/SwipableCard.vue'
 import { useMovieStore } from '../features/stores/useMovieStore';
+import MyMovieList from '../features/components/MyMovieList.vue';
 
 
 const movieStore = useMovieStore();
+
+const currentScreen = ref(1);
 
 // onmount to call fetchMovies
 onMounted(() => {
@@ -13,21 +16,27 @@ onMounted(() => {
 });
 
 
+const setCurrentScreen = (screenNumber) => {
+  currentScreen.value = screenNumber;
+};
+
 </script>
 
 <template>
-  <Header />
+  <Header @setMode="setCurrentScreen"/>
   <main class="container">
     
 
 
 <p>Liked movies so far: {{movieStore.likedMovies.length}}</p>
 
-<SwipableCard v-if="movieStore.currentMovie != null"
+ <SwipableCard v-if="movieStore.currentMovie != null && currentScreen === 1"
 :movie ="movieStore.currentMovie"
 @like="movieStore.like"
 @reject="movieStore.reject"
 />
+
+<MyMovieList v-if="currentScreen === 2" />
 
 <!-- divider -->
 

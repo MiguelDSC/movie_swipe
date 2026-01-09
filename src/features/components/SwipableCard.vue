@@ -1,46 +1,19 @@
 <template>
-  <div
-    class="movie-card"
-    :style="cardStyle"
-    @pointerdown="onPointerDown"
-    @pointermove="onPointerMove"
-    @pointerup="onPointerUp"
-    @pointercancel="onPointerUp"
-  >
-    <img
-      class="poster"
-      :src="posterUrl"
-      :alt="movie.title"
-      draggable="false"
-    />
-
-    <div class="info">
-      <h2 class="title">
-        {{ movie.title }}
-        <span class="year">({{ releaseYear }})</span>
-      </h2>
-
-      <div class="ratings">
-        ⭐ {{ rating }}
-        <span v-if="movie.rtScore">🍅 {{ movie.rtScore }}%</span>
-      </div>
-
-      <p class="description">
-        {{ movie.overview }}
-      </p>
-    </div>
+  <MovieCard :movie="movie" :style="cardStyle" @pointerdown="onPointerDown" @pointermove="onPointerMove" @pointerup="onPointerUp"
+    @pointercancel="onPointerUp">
 
     <!-- Swipe feedback -->
     <div v-if="swipeDirection" class="badge" :class="swipeDirection">
       {{ swipeDirection === 'like' ? 'LIKE' : 'NOPE' }}
     </div>
-  </div>
+  </MovieCard>
+  
 </template>
 
 <script setup>
 import { computed, ref } from 'vue'
-import placeholder from '../../assets/stock-img.jpg'
-import { baseUrl } from '../../shared/constants.js'
+import MovieCard  from './MovieCard.vue'
+
 
 const props = defineProps({
   movie: {
@@ -72,6 +45,7 @@ const cardStyle = computed(() => ({
 }))
 
 function onPointerDown(e) {
+  
   startX.value = e.clientX
   currentX.value = e.clientX
   isDragging.value = true
@@ -96,78 +70,10 @@ function onPointerUp() {
   currentX.value = 0
 }
 
-const posterUrl = computed(() =>
 
-      props.movie.poster_path
-        ? `${baseUrl}${props.movie.poster_path}`
-        : placeholder
-
-)
-const rating = computed(() =>
-  typeof props.movie.vote_average === 'number'
-    ? props.movie.vote_average.toFixed(1)
-    : '—'
-)
-
-
-const releaseYear = computed(() =>
-  props.movie.release_date
-    ? props.movie.release_date.split('-')[0]
-    : '—'
-)
 </script>
 
 <style scoped>
-.movie-card {
-  position: relative;
-  width: 80%;
-  max-width: 380px;
-  height: 500px;
-  background: #111;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  touch-action: pan-y;
-  user-select: none;
-}
-
-.poster {
-  width: 100%;
-  height: 65%;
-  object-fit: cover;
-}
-
-.info {
-  padding: 16px;
-  color: #fff;
-}
-
-.title {
-  font-size: 1.2rem;
-  margin-bottom: 4px;
-}
-
-.year {
-  font-weight: normal;
-  opacity: 0.7;
-}
-
-.ratings {
-  font-size: 0.9rem;
-  margin-bottom: 8px;
-}
-
-.description {
-  font-size: 0.85rem;
-  line-height: 1.4;
-  opacity: 0.9;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
 .badge {
   position: absolute;
   top: 20px;
