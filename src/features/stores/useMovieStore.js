@@ -7,7 +7,6 @@ export const useMovieStore = defineStore('movie', {
     return {
       likedMovies: readFromStorage('MS_LIKED_MOVIES'),
       rejectedMovies: readFromStorage('MS_REJECTED_MOVIES'),
-      currentMovie: null,
       currentPage: 1,
       currentIndex: 0,
       error: null,
@@ -16,7 +15,9 @@ export const useMovieStore = defineStore('movie', {
     };
   },
   getters: {
-   
+    currentMovieObj: (state) => {
+      return state.movieList[state.currentIndex] ?? null;
+    }
   },
 
   actions: {
@@ -25,19 +26,16 @@ export const useMovieStore = defineStore('movie', {
       this.currentPage += 1;
     },
 
-     async getLikedMovies() {
-      console.log("getting liked movies ");
+    async getLikedMovies() {
 
       this.error = null;
       this.loading = true;
 
       try {
-        console.log(" bob" );
-        
         const data = await Promise.all(
-      this.likedMovies.map(id => fetchMovieById(id))
-    )
-    return data
+          this.likedMovies.map(id => fetchMovieById(id))
+        )
+        return data
 
       } catch (e) {
         this.error = e
@@ -66,7 +64,6 @@ export const useMovieStore = defineStore('movie', {
 
         this.movieList = filtered;
         this.currentIndex = 0;
-        this.currentMovie = this.movieList[this.currentIndex] ?? null;
       } catch (e) {
         this.error = e;
       } finally {
@@ -76,7 +73,6 @@ export const useMovieStore = defineStore('movie', {
 
     async handleNextMovie() {
       this.currentIndex += 1;
-      this.currentMovie = this.movieList[this.currentIndex] ?? null;
       if (this.currentIndex > this.movieList.length - 1) {
         this.nextPage();
         await this.loadPage();
