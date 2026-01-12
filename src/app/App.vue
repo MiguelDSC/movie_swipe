@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue';
 import Header from '../features/components/Header.vue'
 import SwipableCard from '../features/components/SwipableCard.vue'
 import { useMovieStore } from '../features/stores/useMovieStore';
+import Loading from '../features/components/Loading.vue';
 import MyMovieList from '../features/components/MyMovieList.vue';
 
 
@@ -23,47 +24,30 @@ const setCurrentScreen = (screenNumber) => {
 </script>
 
 <template>
-  <Header @setMode="setCurrentScreen"/>
+  <Header @setMode="setCurrentScreen" />
   <main class="container">
-    
 
 
-<p>Liked movies so far: {{movieStore.likedMovies.length}}</p>
+    <p>{{ currentScreen === 1 ? 'Swipe Movies' : 'My Movie List' }}</p>
 
- <SwipableCard v-if="movieStore.currentMovie != null && currentScreen === 1"
-:movie ="movieStore.currentMovie"
-@like="movieStore.like"
-@reject="movieStore.reject"
-/>
+    <SwipableCard v-if="movieStore.currentMovieObj != null && currentScreen === 1" :movie="movieStore.currentMovieObj"
+      @like="movieStore.like" @reject="movieStore.reject" />
 
-<MyMovieList v-if="currentScreen === 2" />
+    <Loading v-if="movieStore.loading" />
 
-<!-- divider -->
+    <MyMovieList v-if="currentScreen === 2" />
 
-<!-- main content -->
-
-<!-- swipable card  -->
-
-<!--  -->
 
   </main>
 
 </template>
 
 <style scoped>
-
 .container {
-width: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* margin: 50px auto; */
-  /* background-color:  green; */
-
-
 }
-
-
-
 </style>

@@ -12,7 +12,6 @@ export const readFromStorage = (key) => {
     // setting to localStorage
 };
 export const writeToStorage = (key, value) => {
-    console.log('Writing to localStorage:', key, value);
 
     try {
         if (typeof window === 'undefined') return;

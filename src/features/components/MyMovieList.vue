@@ -9,14 +9,18 @@
         >
         </MovieCard>
 
-    </div>
+        <h1 v-if="movieList.length === 0 && !movieStore.loading" >No movies liked yet</h1>
+        
+
+
+
+    </div>  
 </template>
 
 <script setup>
 import MovieCard from './MovieCard.vue';
 import { useMovieStore } from '../stores/useMovieStore.js';
 import { onMounted, ref, computed } from 'vue';
-
 const movieStore = useMovieStore();
 const movieList = ref([]);
 
@@ -59,5 +63,7 @@ const cardStyle =
     gap: 16px;
     justify-content: center;
 }
+
+
 
 </style>

@@ -40,6 +40,9 @@ export const useMovieStore = defineStore('movie', {
       } catch (e) {
         this.error = e
       } finally {
+        // set timeout to show loading state
+        await new Promise(resolve => setTimeout(resolve, 5000));
+
         this.loading = false
       }
       ;

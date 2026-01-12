@@ -74,6 +74,7 @@ const releaseYear = computed(() =>
   position: relative;
   width: 80%;
   max-width: 380px;
+  min-width: 100px;
   height: 500px;
   background: #111;
   border-radius: 16px;
@@ -86,7 +87,7 @@ const releaseYear = computed(() =>
 .poster {
   width: 100%;
   height: 65%;
-  object-fit: cover;
+  object-fit: fill;
   pointer-events:  none;
 }
 
