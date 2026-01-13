@@ -7,6 +7,10 @@
       {{ swipeDirection === 'like' ? 'LIKE' : 'NOPE' }}
     </div>
   </MovieCard>
+
+
+
+  <button @click="emit('return')" class="return" :style="canReturnStyle" >Return Previous</button>
   
 </template>
 
@@ -19,14 +23,20 @@ const props = defineProps({
   movie: {
     type: Object,
     required: true
+  },
+  canReturn: {
+    type: Boolean,
+    default: false
   }
 })
 
-const emit = defineEmits(['like', 'reject'])
+
+
+const emit = defineEmits(['like', 'reject', 'return'])
 
 const startX = ref(0)
 const currentX = ref(0)
-const isDragging = ref(false)
+const isDragging = ref(false);
 
 const threshold = 120
 
@@ -42,6 +52,11 @@ const swipeDirection = computed(() => {
 const cardStyle = computed(() => ({
   transform: `translateX(${deltaX.value}px) rotate(${deltaX.value * 0.05}deg)`,
   transition: isDragging.value ? 'none' : 'transform 0.3s ease'
+}))
+
+const canReturnStyle = computed(() => ({
+  opacity: props.canReturn ? 1 : 0.3,
+  cursor: props.canReturn ? 'pointer' : 'not-allowed'
 }))
 
 function onPointerDown(e) {
@@ -96,4 +111,16 @@ function onPointerUp() {
   border-color: #f87171;
   transform: rotate(10deg);
 }
+
+.return {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+ 
 </style>

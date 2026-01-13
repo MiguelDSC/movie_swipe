@@ -5,7 +5,8 @@ export const readFromStorage = (key) => {
         const raw = window.localStorage.getItem(key);
         const parsed = raw ? JSON.parse(raw) : [];
         return Array.isArray(parsed) ? parsed : [];
-    } catch (_) {
+    } catch (e) {
+        console.log(`Failed to read from localStorage : ${e}`);
         return [];
     }
 
@@ -15,12 +16,11 @@ export const writeToStorage = (key, value) => {
 
     try {
         if (typeof window === 'undefined') return;
-        window.localStorage.setItem
-            (key, JSON.stringify(value));
+        window.localStorage.setItem(key, JSON.stringify(value));
 
 
-    } catch (_) {
-        console.log('Failed to write to localStorage');
+    } catch (e) {
+        console.log(`Failed to write to localStorage : ${e}`);
         // ignore quota or serialization errors
     }
 };

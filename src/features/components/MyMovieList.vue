@@ -1,20 +1,21 @@
 <template>
-    <div class="movie-list">
-        <MovieCard v-if="movieList.length > 0"
+    <div class="movie-list" v-if="movieList.length > 0">
+        <MovieCard
             v-for="movie in movieList"
             :key="movie.id"
             :movie="movie"
             :style="cardStyle"
           
-        >
-        </MovieCard>
+        />
+        </div>
+ 
 
         <h1 v-if="movieList.length === 0 && !movieStore.loading" >No movies liked yet</h1>
         
 
 
 
-    </div>  
+ 
 </template>
 
 <script setup>

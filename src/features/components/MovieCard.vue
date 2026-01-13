@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import placeholder from '../../assets/stock-img.jpg'
 import { baseUrl } from '../../shared/constants.js'
 
