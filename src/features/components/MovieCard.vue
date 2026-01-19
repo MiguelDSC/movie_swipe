@@ -77,7 +77,7 @@ const releaseYear = computed(() =>
 .poster {
   width: 100%;
   height: auto;
-  max-height: 45%;
+  max-height: 78%;
   object-fit: cover;
   background: #000;
   pointer-events: none;
@@ -86,13 +86,13 @@ const releaseYear = computed(() =>
 }
 
 .movie-card:hover .poster {
-  max-height: 60%;
+  max-height: 0%;
 }
 
 /* ---------- Info section ---------- */
 .info {
   flex: 1;
-  padding: 14px 16px;
+  padding: 0px 16px;
 
   display: flex;
   flex-direction: column;
@@ -129,13 +129,21 @@ const releaseYear = computed(() =>
   font-size: clamp(0.8rem, 3vw, 0.9rem);
   line-height: 1.4;
   opacity: 0.9;
+  /* background-color:  red; */
+  height: 100%;
 
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 
-  /* overflow: hidden; */
+  overflow-y: scroll;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox, Safari 18.2+, Chromium 121+ */
   text-overflow: ellipsis;
+}
+
+.description::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
 }
 
 /* ---------- Swipe badges ---------- */
