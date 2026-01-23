@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import Header from '../features/components/TopHeader.vue'
 import SwipableCard from '../features/components/SwipableCard.vue'
 import { useMovieStore } from '../features/stores/useMovieStore';
@@ -8,14 +8,24 @@ import MyMovieList from '../features/components/MyMovieList.vue';
 
 
 const movieStore = useMovieStore();
-
 const currentScreen = ref(1);
 
-// onmount to call fetchMovies
 onMounted(() => {
-  if (!movieStore.currentMovieObj) movieStore.loadPage();
+  // Load initial movies for swiping
+  if (currentScreen.value === 1 && !movieStore.currentMovieObj) {
+    movieStore.loadPage();
+  }
 });
 
+watch(currentScreen, (newScreen) => {
+  //  Load movies when switching to swipe screen if not already loaded
+  if (newScreen === 1 && !movieStore.currentMovieObj) {
+    movieStore.loadPage();
+  }
+    if (newScreen === 2 && movieStore.likedMovies.length === 0) {
+    movieStore.getLikedMovies();
+  }
+}); 
 
 const setCurrentScreen = (screenNumber) => {
   currentScreen.value = screenNumber;

@@ -13,13 +13,14 @@
     </div>
   </MovieCard>
 
-  <button @click="emit('return')" class="return" :style="canReturnStyle">
+  <!-- <button @click="emit('return')" class="return" :style="canReturnStyle">
     Return Previous
-  </button>
+  </button> -->
 </template>
 
 <script setup>
 import { computed, ref } from "vue";
+
 import MovieCard from "./MovieCard.vue";
 
 const props = defineProps({
@@ -32,6 +33,7 @@ const props = defineProps({
     default: false,
   },
 });
+
 
 const emit = defineEmits(["like", "reject", "return"]);
 
@@ -62,10 +64,13 @@ const cardStyle = computed(() => ({
   cursor: isDragging.value ? "grabbing" : "grab",
 }));
 
-const canReturnStyle = computed(() => ({
-  opacity: props.canReturn ? 1 : 0.3,
-  cursor: props.canReturn ? "pointer" : "not-allowed",
-}));
+// const canReturnStyle = computed(() => ({
+//   opacity: props.canReturn ? 1 : 0.3,
+//   cursor: props.canReturn ? "pointer" : "not-allowed",
+// }));
+
+
+
 
 const onPointerDown = (event) => {
   event.target.setPointerCapture(event.pointerId);
