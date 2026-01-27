@@ -22,7 +22,7 @@ watch(currentScreen, (newScreen) => {
   if (newScreen === 1 && !movieStore.currentMovieObj) {
     movieStore.loadPage();
   }
-    if (newScreen === 2 && movieStore.likedMovies.length === 0) {
+    if (newScreen === 2) {
     movieStore.getLikedMovies();
   }
 }); 

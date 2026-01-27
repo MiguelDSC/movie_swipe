@@ -53,6 +53,21 @@ const releaseYear = computed(() =>
 </script>
 
 <style scoped>
+
+.list-style {
+  width: 90%;
+  max-width: 600px;
+  height: 30px;
+  flex-direction: row;
+}
+
+.card-style {
+  width: 90%;
+  max-width: 380px;
+  height: min(90dvh, 500px);
+  flex-direction: column;
+}
+
 .movie-card {
   position: relative;
   display: flex;
@@ -78,7 +93,7 @@ const releaseYear = computed(() =>
   width: 100%;
   height: auto;
   max-height: 78%;
-  object-fit: cover;
+  object-fit: fill;
   background: #000;
   pointer-events: none;
 
