@@ -41,24 +41,26 @@ const props = defineProps({
 });
 
 const posterUrl = computed(() =>
-  props.movie.poster_path ? `${baseUrl}${props.movie.poster_path}` : placeholder
+  props.movie.poster_path
+    ? `${baseUrl}${props.movie.poster_path}`
+    : placeholder,
 );
 
 const rating = computed(() =>
   typeof props.movie.vote_average === "number"
     ? props.movie.vote_average.toFixed(1)
-    : "—"
+    : "—",
 );
 
 const releaseYear = computed(() =>
-  props.movie.release_date ? props.movie.release_date.split("-")[0] : "—"
+  props.movie.release_date ? props.movie.release_date.split("-")[0] : "—",
 );
 </script>
 
 <style scoped>
 /* Full-width, slim list row */
 .movie-row {
-  width: 100%;
+  width: 90%;
   max-width: 100%;
 
   height: 50px;
@@ -83,7 +85,7 @@ const releaseYear = computed(() =>
 /* Poster becomes a small square/thumbnail */
 .poster {
   height: 100%;
-  width: 38px;              /* fixed thumb width */
+  width: 38px; /* fixed thumb width */
   border-radius: 8px;
   object-fit: cover;
   flex: 0 0 auto;
@@ -93,7 +95,7 @@ const releaseYear = computed(() =>
 
 /* Content takes remaining space */
 .content {
-  min-width: 0;             /* IMPORTANT for ellipsis to work in flex */
+  min-width: 0; /* IMPORTANT for ellipsis to work in flex */
   flex: 1;
 
   display: flex;
