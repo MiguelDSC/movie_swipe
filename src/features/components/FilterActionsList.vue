@@ -42,8 +42,11 @@ const activeFilterStyle = {
 }
 
 .filter-actions-list {
+  width: 100%;
   display: flex;
   gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
   padding-bottom: 20px;
   overflow-x: auto;
 }

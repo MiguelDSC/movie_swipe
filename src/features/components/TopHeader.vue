@@ -8,14 +8,18 @@
     <nav class="nav">
       <button
         class="nav-btn"
-        @click="$emit('setMode', 1)"
+        @click="$emit('setMode', SCREEN_MODES.SWIPE_MODE)"
         aria-label="Swipe movies"
       >
         <span class="icon">⬅️👆🏼</span>
         <span class="label">{{ swipeMoviesBtn }}</span>
       </button>
 
-      <button class="nav-btn" @click="$emit('setMode', 2)" aria-label="My list">
+      <button
+        class="nav-btn"
+        @click="$emit('setMode', SCREEN_MODES.BROWSE_MODE)"
+        aria-label="My list"
+      >
         <span class="icon">⭐</span>
         <span class="label">{{ myListBtn }}</span>
       </button>
@@ -24,6 +28,7 @@
 </template>
 
 <script setup>
+import { SCREEN_MODES } from "../../shared/constants";
 defineEmits(["setMode"]);
 
 const title = "Movie Swipe";
@@ -78,7 +83,9 @@ h1 {
   font-size: 0.9rem;
 
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.1s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease;
 }
 
 .nav-btn:hover {

@@ -82,6 +82,10 @@ const releaseYear = computed(() =>
   cursor: pointer;
 }
 
+.movie-row:hover {
+  background: #222;
+}
+
 /* Poster becomes a small square/thumbnail */
 .poster {
   height: 100%;

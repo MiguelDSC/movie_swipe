@@ -1,17 +1,17 @@
 <template>
-  <ToggleViewComponent />
+  <ToggleViewComponent @viewMode="viewModeHandler" />
   <FilterActionsList />
   <div
     class="movie-list"
-    :style="styleForViewMode"
+    :class="{ 'card-view': viewMode === view_modes.CardView }"
     v-if="movieStore.getFilteredMovies.length > 0 && !movieStore.loading"
   >
     <template v-for="movie in movieStore.getFilteredMovies" :key="movie.id">
       <MovieListCardItem
-        v-if="filterStore.getActiveViewMode === view_modes.ListView"
+        v-if="viewMode === view_modes.ListView"
         :movie="movie"
       />
-      <MovieCard v-else :movie="movie" :style="cardStyle" />
+      <MovieCard v-else :movie="movie" :compact="true" />
     </template>
   </div>
 
@@ -35,40 +35,28 @@ const filterStore = useFilterStore();
 // computed style based on screen size can be added here if needed
 // mobile max 2 per row, else just let it grow
 
-const styleForViewMode = computed(() => {
-  if (filterStore.getActiveViewMode === view_modes.ListView) {
-    console.log("ListView style applied");
-    return {
-      flexDirection: "column",
-      alignItems: "center",
-    };
-  } else {
-    console.log("CardView style applied");
-    return {
-      flexDirection: "row",
-      alignItems: "stretch",
-    };
-  }
-});
-
-const cardStyle = computed(() => {
-  const width = window.innerWidth;
-  if (width < 600) {
-    return { width: "45%", height: "300px" }; // 2 per row
-  } else if (width < 900) {
-    return { width: "30%", height: "300px" }; // 3 per row
-  } else {
-    return { width: "200px", height: "300px" }; // fixed size
-  }
-});
+const viewMode = computed(() => filterStore.getActiveViewMode);
 </script>
 
 <style scoped>
 .movie-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
   max-width: 100%;
   gap: 16px;
+  padding: 16px;
+}
+
+.movie-list.card-view {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .movie-list.card-view {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 380px));
+  }
 }
 </style>

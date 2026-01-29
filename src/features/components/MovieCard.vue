@@ -1,5 +1,5 @@
 <template>
-  <div class="movie-card" :style="style">
+  <div class="movie-card" :class="{ compact }" :style="style">
     <img class="poster" :src="posterUrl" :alt="movie.title" />
 
     <div class="info">
@@ -36,24 +36,29 @@ const props = defineProps({
     type: Object,
     default: () => ({}), // ensures always an object
   },
+  compact: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const posterUrl = computed(() =>
-  props.movie.poster_path ? `${baseUrl}${props.movie.poster_path}` : placeholder
+  props.movie.poster_path
+    ? `${baseUrl}${props.movie.poster_path}`
+    : placeholder,
 );
 const rating = computed(() =>
   typeof props.movie.vote_average === "number"
     ? props.movie.vote_average.toFixed(1)
-    : "—"
+    : "—",
 );
 
 const releaseYear = computed(() =>
-  props.movie.release_date ? props.movie.release_date.split("-")[0] : "—"
+  props.movie.release_date ? props.movie.release_date.split("-")[0] : "—",
 );
 </script>
 
 <style scoped>
-
 .list-style {
   width: 90%;
   max-width: 600px;
@@ -73,9 +78,10 @@ const releaseYear = computed(() =>
   display: flex;
   flex-direction: column;
 
-  width: 90%;
   max-width: 380px;
+  width: 90%;
   height: min(90dvh, 500px);
+  /* use height in percentages */
 
   background: #111;
   border-radius: 16px;
@@ -86,6 +92,19 @@ const releaseYear = computed(() =>
   touch-action: pan-y;
   user-select: none;
   cursor: pointer;
+}
+
+.movie-card.compact {
+  width: 100%;
+  height: 350px;
+  max-height: 350px;
+}
+
+@media (max-width: 640px) {
+  .movie-card.compact {
+    height: 280px;
+    max-height: 280px;
+  }
 }
 
 /* ---------- Poster ---------- */
@@ -152,13 +171,13 @@ const releaseYear = computed(() =>
   -webkit-line-clamp: 3;
 
   overflow-y: scroll;
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox, Safari 18.2+, Chromium 121+ */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox, Safari 18.2+, Chromium 121+ */
   text-overflow: ellipsis;
 }
 
 .description::-webkit-scrollbar {
-    display: none;  /* Safari and Chrome */
+  display: none; /* Safari and Chrome */
 }
 
 /* ---------- Swipe badges ---------- */
