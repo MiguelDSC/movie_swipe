@@ -1,6 +1,6 @@
 <template>
-  <div class="movie-card" :class="{ compact }" :style="style">
-    <img class="poster" :src="posterUrl" :alt="movie.title" />
+  <div class="movie-card"  :style="style">
+    <img class="poster" :src="posterUrl" :class="infoClass" :alt="movie.title" />
 
     <div class="info">
       <h2 class="title">
@@ -11,20 +11,33 @@
       <div class="ratings">
         ⭐ {{ rating }}
         <span v-if="movie.rtScore">🍅 {{ movie.rtScore }}%</span>
+        
       </div>
+
+      <button
+        class="toggle-info"
+        type="button"
+        :aria-expanded="showInfo"
+        aria-label="Toggle details"
+        @click="toggleInfo"
+      >
+        <ArrowIcon :open="showInfo" />
+      </button>
 
       <p class="description">
         {{ movie.overview }}
       </p>
+
     </div>
 
-    <slot></slot>
+  
   </div>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import placeholder from "../../assets/stock-img.jpg";
+import ArrowIcon from "./ArrowIcon.vue";
 import { baseUrl } from "../../shared/constants.js";
 
 const props = defineProps({
@@ -41,6 +54,20 @@ const props = defineProps({
     default: false,
   },
 });
+
+const showInfo = ref(false);
+
+
+const toggleInfo = () => {
+  console.log( "clockk");
+  
+  showInfo.value = !showInfo.value;
+};
+
+
+const infoClass = computed(() => (showInfo.value ? "expanded" : ""));
+
+
 
 const posterUrl = computed(() =>
   props.movie.poster_path
@@ -73,6 +100,23 @@ const releaseYear = computed(() =>
   flex-direction: column;
 }
 
+.toggle-info {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius:  15px;
+  background-color: gray;
+  padding: 0;
+  z-index: 10;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.poster.expanded {
+  max-height: 0%;
+}
+
 .movie-card {
   position: relative;
   display: flex;
@@ -93,20 +137,6 @@ const releaseYear = computed(() =>
   user-select: none;
   cursor: pointer;
 }
-
-.movie-card.compact {
-  width: 100%;
-  height: 350px;
-  max-height: 350px;
-}
-
-@media (max-width: 640px) {
-  .movie-card.compact {
-    height: 280px;
-    max-height: 280px;
-  }
-}
-
 /* ---------- Poster ---------- */
 .poster {
   width: 100%;
@@ -119,19 +149,17 @@ const releaseYear = computed(() =>
   transition: max-height 0.35s ease;
 }
 
-.movie-card:hover .poster {
+/* .movie-card:hover .poster {
   max-height: 0%;
-}
+} */
 
 /* ---------- Info section ---------- */
 .info {
   flex: 1;
   padding: 0px 16px;
-
   display: flex;
   flex-direction: column;
   gap: 8px;
-
   color: #fff;
   overflow: hidden;
 
