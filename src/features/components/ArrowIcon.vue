@@ -31,13 +31,13 @@ defineProps({
   display: block;
 
   /* down by default */
-  transform: rotate(0deg);
+  transform: rotate(180deg);
   transition: transform 220ms ease;
   transform-origin: 50% 50%;
 }
 
 .arrow.open {
   /* flips to point up */
-  transform: rotate(180deg);
+  transform: rotate(0deg);
 }
 </style>
