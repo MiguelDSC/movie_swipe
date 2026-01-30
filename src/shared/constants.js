@@ -12,3 +12,8 @@ export const SCREEN_MODES = {
   SWIPE_MODE: "swipe",
   BROWSE_MODE: "browse",
 };
+
+export const imdbBaseUrl = "https://www.imdb.com/title/";
+export const stremioBaseUrl = "https://web.stremio.com/#/detail/movie/";
+
+export const videoBaseUrl = "https://www.youtube.com/watch?v=";

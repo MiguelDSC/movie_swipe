@@ -16,3 +16,9 @@ export async function getMovieDetails(id, { language = 'en-US' } = {}) {
   if (!id) throw new Error('Movie id is required');
   return apiClient.get(`/movie/${id}`, { params: { language } });
 }
+
+export async function getMovieVideoInfo(id, { language = 'en-US' } = {}) {
+  if (!id) throw new Error('Movie id is required');
+  return apiClient.get(`/movie/${id}/videos`, { params: { language } });
+
+}

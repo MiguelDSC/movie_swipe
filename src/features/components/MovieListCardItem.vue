@@ -6,9 +6,11 @@
     @click="handleClick"
     ref="cardRef"
   >
-    <div class="poster-container">
+    <div class="poster-container" @click.stop="handleTrailerClick">
       <img class="poster" :src="posterUrl" :alt="movie.title" />
-      <div v-if="isExpanded" class="play-icon">▶</div>
+      <div v-if="isExpanded" class="play-icon" @click.stop="handleTrailerClick">
+        ▶
+      </div>
     </div>
 
     <div class="content">
@@ -18,7 +20,32 @@
           <span class="year">({{ releaseYear }})</span>
         </h2>
 
-        <div class="ratings">
+        <div v-if="isExpanded" class="top-right">
+          <div class="action-icons">
+            <button
+              class="icon-button"
+              @click.stop="openStremio(movie)"
+              title="open in Stremio"
+            >
+              <img :src="stremioIcon" alt="Stremio" width="16" height="16" />
+            </button>
+            <button
+              class="icon-button"
+              @click.stop="openImdb(movie)"
+              title="open in IMDb"
+            >
+              <img :src="imdbIcon" alt="IMDb" width="25" height="16" />
+            </button>
+            <div class="ratings">
+              <span class="rating">⭐ {{ rating }}</span>
+              <span v-if="movie.rtScore" class="rt">
+                🍅 {{ movie.rtScore }}%
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="!isExpanded" class="ratings">
           <span class="rating">⭐ {{ rating }}</span>
           <span v-if="movie.rtScore" class="rt">🍅 {{ movie.rtScore }}%</span>
         </div>
@@ -31,21 +58,6 @@
       >
         {{ movie.overview }}
       </p>
-
-      <!-- <div v-if="isExpanded" class="extra-info">
-        <div class="info-row" v-if="movie.release_date">
-          <span class="label">Release Date:</span>
-          <span class="value">{{ formattedReleaseDate }}</span>
-        </div>
-        <div class="info-row" v-if="movie.vote_count">
-          <span class="label">Vote Count:</span>
-          <span class="value">{{ movie.vote_count.toLocaleString() }}</span>
-        </div>
-        <div class="info-row" v-if="movie.popularity">
-          <span class="label">Popularity:</span>
-          <span class="value">{{ movie.popularity.toFixed(1) }}</span>
-        </div>
-      </div> -->
     </div>
 
     <slot></slot>
@@ -53,9 +65,15 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted, onUnmounted } from "vue";
+import { stremioBaseUrl, imdbBaseUrl } from "../../shared/constants.js";
+import { computed, ref } from "vue";
 import placeholder from "../../assets/stock-img.jpg";
+import stremioIcon from "../../assets/stremio.png";
+import imdbIcon from "../../assets/imdb.png";
 import { baseUrl } from "../../shared/constants.js";
+import { useMovieTrailer } from "../composables/useMovieTrailer.js";
+
+const { openTrailer } = useMovieTrailer();
 
 const props = defineProps({
   movie: {
@@ -72,6 +90,25 @@ const props = defineProps({
   },
 });
 
+const handleTrailerClick = async (event) => {
+  event.stopPropagation();
+  await openTrailer(props.movie.id);
+};
+
+const openStremio = (movie) => {
+  const stremioUrl = `${stremioBaseUrl}${movie.imdb_id}`;
+  window.open(stremioUrl, "_blank");
+};
+
+const openImdb = (movie) => {
+  if (!movie.imdb_id) {
+    console.warn("IMDb ID not available for this movie.");
+    return;
+  }
+  const imdbUrl = `${imdbBaseUrl}${movie.imdb_id}/`;
+  window.open(imdbUrl, "_blank");
+};
+
 const emit = defineEmits(["toggle"]);
 const cardRef = ref(null);
 
@@ -79,24 +116,6 @@ const handleClick = (event) => {
   event.stopPropagation();
   emit("toggle");
 };
-
-const handleClickOutside = (event) => {
-  if (
-    props.isExpanded &&
-    cardRef.value &&
-    !cardRef.value.contains(event.target)
-  ) {
-    emit("toggle");
-  }
-};
-
-onMounted(() => {
-  document.addEventListener("click", handleClickOutside);
-});
-
-onUnmounted(() => {
-  document.removeEventListener("click", handleClickOutside);
-});
 
 const posterUrl = computed(() =>
   props.movie.poster_path
@@ -113,21 +132,12 @@ const rating = computed(() =>
 const releaseYear = computed(() =>
   props.movie.release_date ? props.movie.release_date.split("-")[0] : "—",
 );
-
-const formattedReleaseDate = computed(() => {
-  if (!props.movie.release_date) return "—";
-  const date = new Date(props.movie.release_date);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-});
 </script>
 
 <style scoped>
 /* Full-width, slim list row */
 .movie-row {
+  position: relative;
   width: 90%;
   max-width: 100%;
 
@@ -137,7 +147,6 @@ const formattedReleaseDate = computed(() => {
   display: flex;
   align-items: center;
   gap: 10px;
-
   background: #111;
   border-radius: 12px;
   overflow: hidden;
@@ -251,6 +260,13 @@ const formattedReleaseDate = computed(() => {
   min-width: 0;
 }
 
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+
 .title {
   min-width: 0;
   margin: 0;
@@ -284,12 +300,11 @@ const formattedReleaseDate = computed(() => {
 
 .description {
   margin: 0;
+  width: 92%;
   color: #fff;
   opacity: 0.85;
-
   font-size: clamp(0.7rem, 2.2vw, 0.85rem);
   line-height: 1.1;
-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -357,6 +372,37 @@ const formattedReleaseDate = computed(() => {
 
 .info-row .value {
   color: #fff;
+}
+
+.action-icons {
+  display: flex;
+  gap: 8px;
+  animation: fadeIn 0.3s ease;
+  flex: 0 0 auto;
+}
+
+.icon-button {
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+}
+
+.icon-button:hover {
+  background: #333;
+  border-color: #666;
+  transform: scale(1.05);
+}
+
+.icon-button:active {
+  transform: scale(0.95);
 }
 
 /* Very small screens: shrink thumb + tighten spacing */

@@ -1,5 +1,4 @@
 <template>
-  <ToggleViewComponent @viewMode="viewModeHandler" />
   <FilterActionsList />
   <div
     class="movie-list"
