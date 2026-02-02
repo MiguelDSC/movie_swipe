@@ -59,7 +59,13 @@ movie_swipe/
 
 ---
 
-## 🚀 Getting Started
+## ⭐ Try It Out!
+
+https://movie-swipe-lac.vercel.app/
+
+---
+
+## 🚀 Getting Started Locally
 
 ### Prerequisites
 

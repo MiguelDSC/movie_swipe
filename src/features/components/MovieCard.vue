@@ -25,11 +25,13 @@
         <ArrowIcon :open="showInfo" />
       </button>
 
+      <div class="hidden-details" :class="{ expanded: showInfo }">
       <p class="description">
         {{ movie.overview }}
       </p>
 
-      <button class="trailer-btn" @click="handleTrailerClick">Watch Trailer</button>
+      <button class="trailer-btn" @click="handleTrailerClick">Watch Trailer</button></div>
+
 
       <slot></slot>
      
@@ -103,9 +105,10 @@ const releaseYear = computed(() =>
 .card-style {
   width: 90%;
   max-width: 380px;
-  height: min(90dvh, 500px);
+  height: min(90dvh, 600px);
   flex-direction: column;
 }
+
 
 .toggle-info {
   position: absolute;
@@ -146,7 +149,7 @@ const releaseYear = computed(() =>
 
   max-width: 380px;
   width: 90%;
-  height: min(90dvh, 500px);
+  height: min(90dvh, 600px);
   /* use height in percentages */
 
   background: #111;
@@ -171,9 +174,6 @@ const releaseYear = computed(() =>
   transition: max-height 0.35s ease;
 }
 
-/* .movie-card:hover .poster {
-  max-height: 0%;
-} */
 
 /* ---------- Info section ---------- */
 .info {
@@ -190,7 +190,7 @@ const releaseYear = computed(() =>
 
 /* ---------- Title ---------- */
 .title {
-  font-size: clamp(1rem, 4vw, 1.2rem);
+  font-size: clamp(1.1rem, 4vw, 1.4rem);
   font-weight: 600;
   line-height: 1.2;
 }
@@ -202,7 +202,7 @@ const releaseYear = computed(() =>
 
 /* ---------- Ratings ---------- */
 .ratings {
-  font-size: clamp(0.85rem, 3vw, 0.95rem);
+  font-size: clamp(0.95rem, 3vw, 2rem);
   opacity: 0.9;
   display: flex;
   gap: 10px;
@@ -210,24 +210,33 @@ const releaseYear = computed(() =>
 
 /* ---------- Description ---------- */
 .description {
-  font-size: clamp(0.8rem, 3vw, 0.9rem);
+  font-size: 15px;
   line-height: 1.4;
   opacity: 0.9;
   /* background-color:  red; */
-  /* height: 100%; */
+  max-height: 150px;
 
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-
-  overflow-y: scroll;
+  overflow-y: auto;
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox, Safari 18.2+, Chromium 121+ */
-  text-overflow: ellipsis;
 }
 
 .description::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
+}
+
+/* ---------- Hidden Details ---------- */
+.hidden-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+    display: flex;
+  flex-direction: column;
+}
+
+.hidden-details.expanded {
+  max-height: 500px;
+
 }
 
 /* ---------- Swipe badges ---------- */
