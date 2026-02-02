@@ -13,6 +13,7 @@
         <span v-if="movie.rtScore">🍅 {{ movie.rtScore }}%</span>
         
       </div>
+      
 
       <button
         class="toggle-info"
@@ -28,6 +29,11 @@
         {{ movie.overview }}
       </p>
 
+      <button class="trailer-btn" @click="handleTrailerClick">Watch Trailer</button>
+
+      <slot></slot>
+     
+
     </div>
 
   
@@ -35,10 +41,11 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import placeholder from "../../assets/stock-img.jpg";
 import ArrowIcon from "./ArrowIcon.vue";
 import { baseUrl } from "../../shared/constants.js";
+import {useMovieTrailer} from "../composables/useMovieTrailer.js";
 
 const props = defineProps({
   movie: {
@@ -49,18 +56,18 @@ const props = defineProps({
     type: Object,
     default: () => ({}), // ensures always an object
   },
-  compact: {
-    type: Boolean,
-    default: false,
-  },
 });
+
+const { openTrailer } = useMovieTrailer();
+
+const handleTrailerClick = async() => {
+  await openTrailer(props.movie.id);
+}
 
 const showInfo = ref(false);
 
 
 const toggleInfo = () => {
-  console.log( "clockk");
-  
   showInfo.value = !showInfo.value;
 };
 
@@ -115,6 +122,21 @@ const releaseYear = computed(() =>
 
 .poster.expanded {
   max-height: 0%;
+}
+
+
+.trailer-btn {
+
+  font-size: 1rem;
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.trailer-btn:hover {
+  background-color: #e0e0e0;
 }
 
 .movie-card {
@@ -192,7 +214,7 @@ const releaseYear = computed(() =>
   line-height: 1.4;
   opacity: 0.9;
   /* background-color:  red; */
-  height: 100%;
+  /* height: 100%; */
 
   display: -webkit-box;
   -webkit-box-orient: vertical;
