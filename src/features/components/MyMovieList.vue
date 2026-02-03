@@ -21,7 +21,6 @@
 <script setup>
 import FilterActionsList from "./FilterActionsList.vue";
 import { useMovieStore } from "../stores/useMovieStore.js";
-import { view_modes } from "../../shared/constants.js";
 import MovieListCardItem from "./MovieListCardItem.vue";
 import { ref } from "vue";
 
