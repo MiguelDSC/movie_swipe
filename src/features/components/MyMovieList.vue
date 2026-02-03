@@ -2,7 +2,6 @@
   <FilterActionsList />
   <div
     class="movie-list"
-    :class="{ 'card-view': viewMode === view_modes.CardView }"
     v-if="movieStore.getFilteredMovies.length > 0 && !movieStore.loading"
   >
     <MovieListCardItem
