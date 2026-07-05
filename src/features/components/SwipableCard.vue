@@ -1,21 +1,11 @@
 <template>
-  <MovieCard
-    :movie="movie"
-    :style="cardStyle"
-    @pointerdown="onPointerDown"
-    @pointermove="onPointerMove"
-    @pointerup="onPointerUp"
-    @pointercancel="onPointerUp"
-  >
+  <MovieCard :movie="movie" :style="cardStyle" @pointerdown="onPointerDown" @pointermove="onPointerMove"
+    @pointerup="onPointerUp" @pointercancel="onPointerUp">
     <!-- Swipe feedback -->
     <div v-if="swipeDirection" class="badge" :class="swipeDirection">
       {{ swipeDirection === "like" ? "LIKE" : "NOPE" }}
     </div>
   </MovieCard>
-
-  <!-- <button @click="emit('return')" class="return" :style="canReturnStyle">
-    Return Previous
-  </button> -->
 </template>
 
 <script setup>
@@ -51,9 +41,17 @@ const deltaX = computed(() => {
 });
 
 const swipeDirection = computed(() => {
-  if (!isDragging.value) return null;
-  if (deltaX.value > threshold) return "like";
-  if (deltaX.value < -threshold) return "nope";
+  if (!isDragging.value) {
+    
+    return null;
+  }
+  if (deltaX.value > threshold) {
+    return "like";
+  }
+  if (deltaX.value < -threshold) {
+ 
+    return "nope";
+  }
   return null;
 });
 
@@ -63,13 +61,6 @@ const cardStyle = computed(() => ({
   transition: isDragging.value ? "none" : "transform 0.3s ease",
   cursor: isDragging.value ? "grabbing" : "grab",
 }));
-
-// const canReturnStyle = computed(() => ({
-//   opacity: props.canReturn ? 1 : 0.3,
-//   cursor: props.canReturn ? "pointer" : "not-allowed",
-// }));
-
-
 
 
 const onPointerDown = (event) => {
@@ -111,12 +102,14 @@ const onPointerUp = (event) => {
   font-size: 1.2rem;
   font-weight: bold;
   transform: rotate(-10deg);
+  z-index: 10000;
 }
 
 .badge.like {
   left: 20px;
   color: #4ade80;
   border-color: #4ade80;
+    z-index: 10000;
 }
 
 .badge.nope {
@@ -124,6 +117,7 @@ const onPointerUp = (event) => {
   color: #f87171;
   border-color: #f87171;
   transform: rotate(10deg);
+    z-index: 10000;
 }
 
 .return {

@@ -52,7 +52,6 @@ const setCurrentScreen = (screenNumber) => {
         currentScreen === SCREEN_MODES.SWIPE_MODE
       "
       :movie="movieStore.currentMovieObj"
-      :canReturn="movieStore.canReturn"
       @return="movieStore.return()"
       @like="movieStore.like"
       @reject="movieStore.reject"

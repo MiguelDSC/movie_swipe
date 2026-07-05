@@ -2,7 +2,6 @@
   <FilterActionsList />
   <div
     class="movie-list"
-    :class="{ 'card-view': viewMode === view_modes.CardView }"
     v-if="movieStore.getFilteredMovies.length > 0 && !movieStore.loading"
   >
     <MovieListCardItem
@@ -22,7 +21,6 @@
 <script setup>
 import FilterActionsList from "./FilterActionsList.vue";
 import { useMovieStore } from "../stores/useMovieStore.js";
-import { view_modes } from "../../shared/constants.js";
 import MovieListCardItem from "./MovieListCardItem.vue";
 import { ref } from "vue";
 

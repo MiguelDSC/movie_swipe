@@ -6,18 +6,19 @@ import { useFilterStore } from "./useFilterStore";
 export const useMovieStore = defineStore("movie", {
   state: () => {
     return {
-      likedMovies: readFromStorage("MS_LIKED_MOVIES"),
-      rejectedMovies: readFromStorage("MS_REJECTED_MOVIES"),
+      likedMoviesIds: readFromStorage("MS_LIKED_MOVIES"),
+      rejectedMoviesIds: readFromStorage("MS_REJECTED_MOVIES"),
       currentPage: 1,
       currentIndex: 0,
       error: null,
       loading: false,
-      movieList: [],
+      swipeMoviesList: [],
+      likedMoviesList: [],
     };
   },
   getters: {
     currentMovieObj: (state) => {
-      return state.movieList[state.currentIndex] ?? null;
+      return state.swipeMoviesList[state.currentIndex] ?? null;
     },
     getFilteredMovies: (state) => {
       const filterStore = useFilterStore();
@@ -25,9 +26,9 @@ export const useMovieStore = defineStore("movie", {
         filterStore.activeFilter == null ||
         filterStore.activeFilter.id === 1
       ) {
-        return state.movieList;
+        return state.likedMoviesList;
       } else {
-        return state.movieList.filter((movie) =>
+        return state.likedMoviesList.filter((movie) =>
           movie.genres.some(
             (genre) => genre.name === filterStore.activeFilter.name,
           ),
@@ -46,11 +47,10 @@ export const useMovieStore = defineStore("movie", {
 
       try {
         const data = await Promise.all(
-          this.likedMovies.map((id) => fetchMovieById(id)),
+          this.likedMoviesIds.map((id) => fetchMovieById(id)),
         );
-        console.log(data);
 
-        this.movieList = data;
+       this.likedMoviesList = data;
       } catch (e) {
         this.error = e;
       } finally {
@@ -65,14 +65,14 @@ export const useMovieStore = defineStore("movie", {
       try {
         const results = await fetchMovies(page);
 
-        const seen = new Set([...this.likedMovies, ...this.rejectedMovies]);
+        const seen = new Set([...this.likedMoviesIds, ...this.rejectedMoviesIds]);
         const filtered = results.filter((m) => !seen.has(m.id));
 
         if (filtered.length === 0) {
           return this.loadPage(page + 1);
         }
 
-        this.movieList = filtered;
+        this.swipeMoviesList = filtered;
         this.currentIndex = 0;
         this.currentPage = page;
       } catch (e) {
@@ -84,7 +84,7 @@ export const useMovieStore = defineStore("movie", {
 
     async handleNextMovie() {
       this.currentIndex += 1;
-      if (this.currentIndex > this.movieList.length - 1) {
+      if (this.currentIndex > this.swipeMoviesList.length - 1) {
         this.nextPage();
 
         await this.loadPage();
@@ -92,20 +92,20 @@ export const useMovieStore = defineStore("movie", {
     },
 
     async like(movie) {
-      if (movie?.id != null && !this.likedMovies.includes(movie.id)) {
-        this.likedMovies.push(movie.id);
+      if (movie?.id != null && !this.likedMoviesIds.includes(movie.id)) {
+        this.likedMoviesIds.push(movie.id);
       }
 
-      writeToStorage("MS_LIKED_MOVIES", this.likedMovies);
+      writeToStorage("MS_LIKED_MOVIES", this.likedMoviesIds);
       await this.handleNextMovie();
     },
 
     async reject(movie) {
-      if (movie?.id != null && !this.rejectedMovies.includes(movie.id)) {
-        this.rejectedMovies.push(movie.id);
+      if (movie?.id != null && !this.rejectedMoviesIds.includes(movie.id)) {
+        this.rejectedMoviesIds.push(movie.id);
       }
 
-      writeToStorage("MS_REJECTED_MOVIES", this.rejectedMovies);
+      writeToStorage("MS_REJECTED_MOVIES", this.rejectedMoviesIds);
       await this.handleNextMovie();
     },
   },
