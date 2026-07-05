@@ -1,0 +1,619 @@
+# Static Website Generator — MVP Build Plan
+
+## Goal
+
+Build an internal Vue 3 application that allows me to generate professional static websites for small businesses with as little manual work as possible.
+
+The workflow should be:
+
+1. Client chooses one of four website templates.
+2. Client sends me their business information, logo, photos, and preferred brand color.
+3. I enter that information into the generator.
+4. The generator automatically creates a complete responsive website.
+5. I review it.
+6. I export it as a ZIP file or deploy it.
+7. Deliver the finished website.
+
+The software is **not** the product.
+
+The **finished website** is the product.
+
+---
+
+# Core Principle
+
+The generator should work like this:
+
+```
+Client Information
+        ↓
+Select Template
+        ↓
+Generate Website
+        ↓
+Preview
+        ↓
+Export ZIP
+        ↓
+Deliver to Client
+```
+
+The goal is to **never manually code a client's website again.**
+
+---
+
+# Tech Stack
+
+Use:
+
+- Vue 3
+- Vite
+- TypeScript
+- Tailwind CSS
+- Vue Router
+- JSON client data
+- Static HTML export
+- ZIP generation
+
+Do **not** use:
+
+- Next.js
+- Databases
+- CMS
+- Custom backend
+- Authentication
+
+Everything should remain lightweight and static.
+
+---
+
+# Client Workflow
+
+Clients only need to provide:
+
+## Business Information
+
+- Business name
+- Tagline
+- Short business description
+- About text
+
+## Services
+
+A list of services with short descriptions.
+
+Example:
+
+- Electrical Repairs
+- Installations
+- Maintenance
+
+---
+
+## Contact Information
+
+- Phone number
+- Email
+- Address
+- Opening hours
+- Google Maps link
+
+Optional:
+
+- WhatsApp
+- Instagram
+- Facebook
+- LinkedIn
+
+---
+
+## Branding
+
+- Logo
+- 3–8 photos
+- One brand color
+
+That's it.
+
+No design decisions.
+
+No layout requests.
+
+No custom pages.
+
+---
+
+# Website Templates
+
+Build **4 responsive templates**.
+
+Each template should use the **same data structure**.
+
+Only the design changes.
+
+---
+
+## Template 1 — Clean Professional
+
+Perfect for:
+
+- Electricians
+- Consultants
+- Contractors
+- Physiotherapists
+
+Style:
+
+- Clean
+- White
+- Professional
+- Minimal
+
+---
+
+## Template 2 — Bold Service
+
+Perfect for:
+
+- Builders
+- Plumbers
+- Landscapers
+- Trades
+
+Style:
+
+- Strong typography
+- Big CTA buttons
+- Practical
+- Service-focused
+
+---
+
+## Template 3 — Elegant Studio
+
+Perfect for:
+
+- Salons
+- Beauty
+- Architects
+- Designers
+
+Style:
+
+- Image focused
+- Editorial
+- Premium feeling
+
+---
+
+## Template 4 — Hospitality
+
+Perfect for:
+
+- Restaurants
+- Cafés
+- Bars
+
+Style:
+
+- Large food photography
+- Menu section
+- Opening hours
+- Contact focus
+
+---
+
+# Public Template Gallery
+
+Create a page:
+
+```
+/templates
+```
+
+Clients should be able to view all templates.
+
+Each template card includes:
+
+- Preview image
+- Template name
+- Industries it's best for
+- Live Demo button
+- Choose Template button
+
+Demo routes:
+
+```
+/templates/clean-professional
+
+/templates/bold-service
+
+/templates/elegant-studio
+
+/templates/hospitality
+```
+
+---
+
+# Internal Generator
+
+Create an internal page:
+
+```
+/admin/generate
+```
+
+This page should contain a form.
+
+---
+
+## General
+
+- Template selector
+- Business name
+- Business category
+- Tagline
+
+---
+
+## About
+
+- Business description
+- About text
+
+---
+
+## Services
+
+Ability to add multiple services.
+
+Each service contains:
+
+- Title
+- Description
+
+Add Service button.
+
+---
+
+## Contact
+
+- Phone
+- Email
+- Address
+- Google Maps Embed URL
+- Opening hours
+
+---
+
+## Branding
+
+- Color picker
+- Logo upload
+- Multiple image upload
+
+---
+
+## Social Media
+
+Optional:
+
+- Instagram
+- Facebook
+- LinkedIn
+- WhatsApp
+
+---
+
+Buttons:
+
+```
+Preview Website
+
+Generate Website
+
+Export ZIP
+```
+
+---
+
+# Client Data Structure
+
+Every client becomes one JSON file.
+
+Example:
+
+```json
+{
+  "template": "clean-professional",
+  "businessName": "Amsterdam Electric",
+  "businessType": "Electrician",
+  "tagline": "Reliable electrical work in Amsterdam",
+  "description": "Professional electrical services.",
+  "about": "We help homeowners and businesses with safe and reliable electrical work.",
+  "mainColor": "#2563eb",
+  "logo": "/assets/logo.png",
+  "photos": [
+    "/assets/photo1.jpg",
+    "/assets/photo2.jpg",
+    "/assets/photo3.jpg"
+  ],
+  "services": [
+    {
+      "title": "Electrical Repairs",
+      "description": "Fast repairs."
+    }
+  ],
+  "contact": {
+    "phone": "",
+    "email": "",
+    "address": "",
+    "googleMapsEmbed": "",
+    "openingHours": []
+  },
+  "socials": {
+    "instagram": "",
+    "facebook": "",
+    "linkedin": "",
+    "whatsapp": ""
+  }
+}
+```
+
+---
+
+# Website Pages
+
+Every generated website should include:
+
+- Home
+- About
+- Services
+- Contact
+
+No extra pages.
+
+No blogs.
+
+No booking systems.
+
+---
+
+# Shared Components
+
+Build reusable components.
+
+- Header
+- Footer
+- Hero
+- About Section
+- Services Grid
+- Gallery
+- CTA
+- Contact Details
+- Contact Form
+- Google Maps
+- Opening Hours
+- WhatsApp Button
+
+Every template uses these components.
+
+Only the layout changes.
+
+---
+
+# Responsive Design
+
+Every template must work perfectly on:
+
+- Mobile
+- Tablet
+- Laptop
+- Desktop
+
+Requirements:
+
+Mobile
+
+- Hamburger menu
+- Click-to-call button
+- WhatsApp button
+- Large buttons
+- Optimized spacing
+
+Desktop
+
+- Full navigation
+- Wider layouts
+- Larger imagery
+
+---
+
+# Preview Mode
+
+Before exporting, generate a preview.
+
+Route:
+
+```
+/admin/preview/client-name
+```
+
+The preview should render the selected template using the real client data.
+
+---
+
+# Validation
+
+Before generating the website, validate required fields.
+
+Required:
+
+- Business name
+- Template
+- Tagline
+- Description
+- At least one service
+- Phone OR Email
+- Main color
+
+Optional:
+
+- Logo
+- Photos
+- Socials
+- Opening hours
+- Google Maps
+
+If photos are missing:
+
+Use placeholder images.
+
+---
+
+# SEO
+
+Automatically generate:
+
+- Page title
+- Meta description
+- Open Graph tags
+- robots.txt
+- sitemap.xml
+
+Example:
+
+Title:
+
+```
+Amsterdam Electric | Electrician in Amsterdam
+```
+
+Description:
+
+```
+Professional electrical services in Amsterdam for homes and businesses.
+```
+
+---
+
+# Export
+
+Clicking **Export ZIP** should:
+
+1. Build the website
+2. Export static HTML
+3. Copy assets
+4. Generate README
+5. Compress everything
+
+Output:
+
+```
+generated-sites/
+
+    amsterdam-electric/
+
+        index.html
+
+        about.html
+
+        services.html
+
+        contact.html
+
+        assets/
+
+        README.md
+
+    amsterdam-electric.zip
+```
+
+---
+
+# README
+
+Include:
+
+- Business name
+- Pages included
+- Hosting instructions
+- Domain setup instructions
+- Contact form notes
+- Support contact
+
+---
+
+# Build Phases
+
+## Phase 1 — MVP
+
+Build:
+
+- Vue project
+- Shared components
+- 4 templates
+- JSON data model
+- Admin form
+- Preview
+- ZIP export
+
+---
+
+## Phase 2 — Automation
+
+Add:
+
+- Image compression
+- Automatic color palette generation
+- Better SEO
+- Improved uploads
+- More templates
+
+---
+
+## Phase 3 — Business
+
+Add:
+
+- Portfolio page
+- Before/after examples
+- Testimonials
+- Maintenance plans
+- One-click deployment
+
+---
+
+# Final Rule
+
+This is **not** a web agency platform.
+
+This is a **website generation tool**.
+
+The workflow should always be:
+
+```
+Client provides information
+
+↓
+
+Select template
+
+↓
+
+Click Generate
+
+↓
+
+Preview
+
+↓
+
+Export ZIP
+
+↓
+
+Deliver website
+```
+
+The objective is to produce polished, responsive websites in **under 30 minutes** with virtually **zero manual coding**.
